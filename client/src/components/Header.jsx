@@ -1,5 +1,5 @@
 import { Button, Navbar, TextInput } from "flowbite-react"
-import { Link, NavLink, useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { IoSearchOutline } from "react-icons/io5"
 import { FaMoon } from "react-icons/fa"
 
@@ -28,7 +28,7 @@ export default function Header() {
                     <FaMoon />
                 </Button>
                 <Link to='/sign-in'>
-                    <Button gradientDuoTone='purpleToBlue'>
+                    <Button gradientDuoTone='purpleToBlue' outline>
                         Sign In
                     </Button>
                 </Link>
