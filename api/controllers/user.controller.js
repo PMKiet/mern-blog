@@ -18,14 +18,17 @@ export const updateUser = async (req, res, next) => {
         }
         req.body.password = bcryptjs.compare(password, 10)
     }
+    if (req.body.username) {
 
-    if (req.body.username.length < 7 || req.body.username.length > 20) {
-        return next(errorHandler(400, 'Username must be between7 and 20 characters'))
+        if (req.body.username.length < 7 || req.body.username.length > 20) {
+            return next(errorHandler(400, 'Username must be between7 and 20 characters'))
+        }
+
+        if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
+            return next(errorHandler(400, 'Username must be contain letters and numbers'))
+        }
     }
 
-    if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
-        return next(errorHandler(400, 'Username must be contain letters and numbers'))
-    }
     try {
         const updateUser = await User.findByIdAndUpdate(req.params.userId, {
             $set: {
