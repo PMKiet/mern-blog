@@ -23,7 +23,7 @@ export default function Header() {
                 dispatch(signOutSuccess())
             }
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
