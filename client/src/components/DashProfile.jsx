@@ -1,15 +1,15 @@
 import { Alert, Button, Modal, TextInput } from 'flowbite-react'
 import { useState, useRef, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase'
+import { Link } from 'react-router-dom'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import { updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signOutSuccess } from '../redux/user/userSlice'
-import { useDispatch } from 'react-redux'
 import { RiErrorWarningLine } from "react-icons/ri"
 
 export default function DashProfile() {
-    const { currentUser, error } = useSelector((state) => state.User)
+    const { currentUser, loading, error } = useSelector((state) => state.User)
     const [imageFile, setImageFile] = useState(null)
     const [imageFileUrl, setImageFileUrl] = useState(null)
     const [imageFileIpLoadProgress, setImageFileIpLoadProgress] = useState(null)
@@ -202,9 +202,22 @@ export default function DashProfile() {
                     defaultValue='********'
                     onChange={handleChange}
                 />
-                <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-                    Update
+                <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading || imageFileUpLoading}>
+                    {loading ? 'Loading...' : 'Update'}
                 </Button>
+                {
+                    currentUser.isAdmin && (
+                        <Link to={'/create-post'}>
+                            <Button
+                                type='button'
+                                gradientDuoTone='purpleToPink'
+                                className='w-full'
+                            >
+                                Create a post
+                            </Button>
+                        </Link>
+                    )
+                }
             </form>
             <div className="text-red-500 flex justify-between mt-5">
                 <span onClick={() => setShowModel(true)} className='cursor-pointer'>Delete Account</span>
