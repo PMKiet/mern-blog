@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: 'https://s.net.vn/f4Au'
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 
