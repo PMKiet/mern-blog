@@ -19,7 +19,6 @@ export const signup = async (req, res, next) => {
     })
 
     try {
-
         await newUser.save()
         res.status(201).json({ message: 'Sign up successful' })
 
@@ -57,7 +56,6 @@ export const signin = async (req, res, next) => {
 
 export const google = async (req, res, next) => {
     const { email, name, googlePhotoUrl } = req.body
-    console.log('req', req.body);
     try {
         const user = await User.findOne({ email })
         if (user) {
