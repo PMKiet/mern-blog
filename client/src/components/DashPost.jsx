@@ -2,12 +2,16 @@ import { Table } from "flowbite-react"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { Button, Modal } from 'flowbite-react'
+import { RiErrorWarningLine } from "react-icons/ri"
+
 
 export default function DashPost() {
     const { currentUser } = useSelector((state) => state.User)
     const [userPosts, setUserPosts] = useState([])
     const [showMore, setShowMore] = useState(true)
-    console.log(userPosts)
+    const [showModel, setShowModel] = useState(false)
+    const [postToDelete, setPostToDelete] = useState('')
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -16,7 +20,7 @@ export default function DashPost() {
                 const data = await res.json()
                 if (res.ok) {
                     setUserPosts(data.posts)
-                    if (data.posts.length < 9) {
+                    if (data.posts?.length < 9) {
                         setShowMore(false)
                     }
                 }
@@ -33,12 +37,28 @@ export default function DashPost() {
         try {
             const res = await fetch(`/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`)
             const data = await res.json()
-            console.log(data);
             if (res.ok) {
                 setUserPosts((prev) => [...prev, ...data.posts])
                 if (data.posts.length < 9) {
                     setShowMore(false)
                 }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleDeletePost = async () => {
+        setShowModel(false)
+        try {
+            const res = await fetch(`/api/post/deletepost/${postToDelete}/${currentUser._id}`, {
+                method: 'DELETE'
+            })
+            const data = await res.json()
+            if (!res.ok) {
+                console.log(data.message)
+            } else {
+                window.location.reload()
             }
         } catch (error) {
             console.log(error)
@@ -79,7 +99,12 @@ export default function DashPost() {
                                     </Table.Cell>
                                     <Table.Cell>{post.category}</Table.Cell>
                                     <Table.Cell>
-                                        <span className="font-medium text-red-500 hover:underline cursor-pointer">Delete</span>
+                                        <span onClick={() => {
+                                            setShowModel(true)
+                                            setPostToDelete(post._id)
+                                        }} className="font-medium text-red-500 hover:underline cursor-pointer">
+                                            Delete
+                                        </span>
                                     </Table.Cell>
                                     <Table.Cell>
                                         <Link to={`/post/${post._id}`} className="hover:underline text-teal-500">
@@ -102,6 +127,25 @@ export default function DashPost() {
                 <p>You have no post</p>
             )
             }
+            <Modal show={showModel} onClose={() => setShowModel(false)} popup size='md'>
+                <Modal.Header />
+                <Modal.Body>
+                    <div className='text-center'>
+                        <RiErrorWarningLine className='h-14 w-14 text-gray-400 dark:text-gray-200 md-4 mx-auto' />
+                        <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
+                            Are you sure want to delete this post ?
+                        </h3>
+                        <div className='flex gap-4 justify-center md:justify-end'>
+                            <Button color='gray' onClick={() => setShowModel(false)}>
+                                No, Cancel
+                            </Button>
+                            <Button color='failure' onClick={handleDeletePost}>
+                                Yes, I'm sure
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div >
     )
 }
