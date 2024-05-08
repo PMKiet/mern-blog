@@ -5,13 +5,13 @@ import { Link } from "react-router-dom"
 import { Button, Modal } from 'flowbite-react'
 import { RiErrorWarningLine } from "react-icons/ri"
 
-
 export default function DashPost() {
     const { currentUser } = useSelector((state) => state.User)
     const [userPosts, setUserPosts] = useState([])
     const [showMore, setShowMore] = useState(true)
     const [showModel, setShowModel] = useState(false)
     const [postToDelete, setPostToDelete] = useState('')
+
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -107,7 +107,7 @@ export default function DashPost() {
                                         </span>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        <Link to={`/post/${post._id}`} className="hover:underline text-teal-500">
+                                        <Link to={`/update-post/${post._id}`} className="hover:underline text-teal-500">
                                             <span>Edit</span>
                                         </Link>
                                     </Table.Cell>
