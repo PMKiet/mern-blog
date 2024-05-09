@@ -45,7 +45,7 @@ export const updateUser = async (req, res, next) => {
 }
 
 export const deleteUser = async (req, res, next) => {
-    if (req.user.id !== req.params.userId) {
+    if (!req.user.isAdmin && req.user.id !== req.params.userId) {
         return next(403, 'You are not allow delete this user')
     }
     try {
@@ -81,7 +81,7 @@ export const getUsers = async (req, res, next) => {
 
         const totalUsers = await User.countDocuments()
 
-        const now = new Date(s)
+        const now = new Date()
 
         const oneMonthAgo = new Date(
             now.getFullYear(),
@@ -98,6 +98,7 @@ export const getUsers = async (req, res, next) => {
             lastMonthUsers
         })
     } catch (error) {
+        console.log(error);
         next(error)
     }
 }
