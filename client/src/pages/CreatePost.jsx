@@ -7,7 +7,6 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
 export default function CreatePost() {
     const [file, setFile] = useState(null)
@@ -16,7 +15,6 @@ export default function CreatePost() {
     const [formData, setFormData] = useState({})
     const [publishError, setPublishError] = useState(null)
     const navigate = useNavigate()
-    const { currentUser } = useSelector((state) => state.User)
     const handleUpdateImage = async () => {
         try {
             if (!file) {
