@@ -67,10 +67,20 @@ export default function CommentSection({ postId }) {
                         likes: data.likes,
                         numberOfLike: data.likes.length
                     } : comment))
+            } else {
+                navigate('/sign-in')
+                return
             }
         } catch (error) {
             console.log(error);
         }
+    }
+    const handleEdit = async (comment, editedContent) => {
+        setComments(
+            comments.map((c) =>
+                c._id === comment._id ? { ...c, content: editedContent } : c
+            )
+        )
     }
     return (
         <div className='max-w-2xl mx-auto w-full p-3'>
@@ -93,6 +103,7 @@ export default function CommentSection({ postId }) {
             {currentUser && (
                 <form onSubmit={handleSubmit} className='border border-teal-500 rounded-md p-3'>
                     <Textarea
+                        className='resize-none'
                         onChange={(e) => setComment(e.target.value)}
                         value={comment}
                         placeholder='Add a comment...'
@@ -123,6 +134,7 @@ export default function CommentSection({ postId }) {
                             key={comment._id}
                             comment={comment}
                             onLike={handleLike}
+                            onEdit={handleEdit}
                         />
                     ))}
                 </>
