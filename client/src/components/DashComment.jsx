@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { Button, Modal } from 'flowbite-react'
 import { RiErrorWarningLine } from "react-icons/ri"
-import { FaCheck, FaTimes } from "react-icons/fa"
 
 export default function DashComments() {
     const { currentUser } = useSelector((state) => state.User)
