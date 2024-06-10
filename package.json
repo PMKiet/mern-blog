@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
-    "build": "yarn start && yarn start --prefix client && yarn build --prefix client"
+    "build": "yarn run start && yarn run start --prefix client && yarn run build --prefix client"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
